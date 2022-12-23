@@ -24,7 +24,7 @@ class ItemSeeder extends Seeder
             foreach ($section->items as $bringItem){
                 $item = new Item();
                 $item->name = $bringItem->name;
-                $filename = strtolower(str_replace(' ', '_', $bringItem->itemId));
+                $filename = strtolower(str_replace('ü', 'ue',str_replace(' ', '_', $bringItem->itemId)));
                 Storage::put('public/'.$filename. '.png',file_get_contents("https://web.getbring.com/assets/images/items/$filename.png"));
                 $item->icon = Storage::url('public/'.$filename.'.png');
                 $item->category()->associate($category);
