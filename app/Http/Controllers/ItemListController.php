@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\Models\Item;
-use App\Http\Requests\StoreItemRequest;
-use App\Http\Requests\UpdateItemRequest;
+use App\Models\ItemList;
+use App\Http\Requests\StoreItemListRequest;
+use App\Http\Requests\UpdateItemListRequest;
 
-class ItemController extends Controller
+class ItemListController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +15,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        return Category::with('items')->get();
+        //
     }
 
     /**
@@ -32,10 +31,10 @@ class ItemController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreItemRequest  $request
+     * @param  \App\Http\Requests\StoreItemListRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreItemRequest $request)
+    public function store(StoreItemListRequest $request)
     {
         //
     }
@@ -43,10 +42,10 @@ class ItemController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Item  $item
+     * @param  \App\Models\ItemList  $itemList
      * @return \Illuminate\Http\Response
      */
-    public function show(Item $item)
+    public function show(ItemList $itemList)
     {
         //
     }
@@ -54,10 +53,10 @@ class ItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Item  $item
+     * @param  \App\Models\ItemList  $itemList
      * @return \Illuminate\Http\Response
      */
-    public function edit(Item $item)
+    public function edit(ItemList $itemList)
     {
         //
     }
@@ -65,11 +64,11 @@ class ItemController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateItemRequest  $request
-     * @param  \App\Models\Item  $item
+     * @param  \App\Http\Requests\UpdateItemListRequest  $request
+     * @param  \App\Models\ItemList  $itemList
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateItemRequest $request, Item $item)
+    public function update(UpdateItemListRequest $request, ItemList $itemList)
     {
         //
     }
@@ -77,10 +76,10 @@ class ItemController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Item  $item
+     * @param  \App\Models\ItemList  $itemList
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Item $item)
+    public function destroy(ItemList $itemList)
     {
         //
     }

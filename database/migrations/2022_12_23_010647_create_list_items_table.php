@@ -15,6 +15,10 @@ class CreateListItemsTable extends Migration
     {
         Schema::create('list_items', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(\App\Models\Item::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\ItemList::class)->constrained()->cascadeOnDelete();
+            $table->string('description');
+            $table->dateTime('deleted_at')->nullable();
             $table->timestamps();
         });
     }
