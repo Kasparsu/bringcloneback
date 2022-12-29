@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use App\Models\Item;
+use Exception;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -25,11 +26,24 @@ class ItemSeeder extends Seeder
                 $item = new Item();
                 $item->name = $bringItem->name;
                 $filename = strtolower(str_replace('ü', 'ue',str_replace(' ', '_', $bringItem->itemId)));
-                Storage::put('public/'.$filename. '.png',file_get_contents("https://web.getbring.com/assets/images/items/$filename.png"));
+                
+                Storage::put('public/'.$filename. '.png',$this->getImage("https://web.getbring.com/assets/images/items/$filename.png"));
                 $item->icon = Storage::url('public/'.$filename.'.png');
                 $item->category()->associate($category);
                 $item->save();
             }
         }
+    }
+    public function getImage(string $url){
+        $image = null;
+        while(!$image){
+            try{
+             $image = file_get_contents($url);
+                
+            } catch(Exception $e){
+                $image = false;
+            }
+        }
+        return $image;
     }
 }
