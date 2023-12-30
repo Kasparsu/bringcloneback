@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Icon;
 use Exception;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
@@ -17,7 +18,13 @@ class IconSeeder extends Seeder
      */
     public function run()
     {
-        $json = Http::get('https://web.getbring.com/locale/catalog.en-US.json')->body();
+        if(!Cache::has('catalog')){
+
+            $json = Http::get('https://web.getbring.com/locale/catalog.en-US.json')->body();
+            Cache::put('catalog', $json, now()->addDays(30));
+        } else {
+            $json = Cache::get('catalog');
+        }
         $values = json_decode($json);
         foreach ($values->catalog->sections as $section) {
 
@@ -34,7 +41,13 @@ class IconSeeder extends Seeder
                 $filename = strtolower(str_replace('ä', 'ae', $filename));
                 $filename = strtolower(str_replace('ö', 'oe', $filename));
                 $filename = strtolower(str_replace('é', 'e', $filename));
-                $image = $this->getImage("https://web.getbring.com/assets/images/items/$filename.png");
+                if(!Cache::has($filename)){
+                    $image = $this->getImage("https://web.getbring.com/assets/images/items/$filename.png");
+                    Cache::put($filename, $image, now()->addDays(30));
+                } else {
+                    $image = Cache::get($filename);
+                }
+
                 if ($image) {
                     Storage::put("public/$filename.png", $image);
                     $icon->image = Storage::url('public/' . $filename . '.png', $image);
@@ -46,8 +59,11 @@ class IconSeeder extends Seeder
         foreach($alphabet as $letter){
             $icon = new Icon();
             $icon->name = $letter;
-            $image = Storage::put("public/$letter.png",$this->getImage("https://web.getbring.com/assets/images/items/$letter.png"));
-            $icon->image = Storage::url('public/' . $letter . '.png', $image);
+            if(!Cache::has($letter)){
+                $image = Storage::put("public/$letter.png",$this->getImage("https://web.getbring.com/assets/images/items/$letter.png"));
+                Cache::put($letter, $image, now()->addDays(30));
+            }
+            $icon->image = Storage::url('public/' . $letter . '.png');
             $icon->save();
         }
 

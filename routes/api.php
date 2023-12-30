@@ -18,3 +18,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::get('/item-templates', [\App\Http\Controllers\ItemTemplateController::class, 'index']);
+Route::post('/items', [\App\Http\Controllers\ItemController::class, 'store']);
+Route::get('/items', [\App\Http\Controllers\ItemController::class, 'index']);
+Route::delete('/items/{item}', [\App\Http\Controllers\ItemController::class, 'destroy']);

@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Item;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
+use App\Models\ItemTemplate;
 
 class ItemController extends Controller
 {
@@ -16,7 +17,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        return Category::with('items')->get();
+        return Item::with('icon')->get();
     }
 
     /**
@@ -37,7 +38,13 @@ class ItemController extends Controller
      */
     public function store(StoreItemRequest $request)
     {
-        //
+       if(!Item::where('item_template_id', $request->input('id'))->exists()){
+        $template = ItemTemplate::find($request->input('id'));
+        $item = new Item($template->toArray());
+        $item->itemTemplate()->associate($template);
+        $item->save();
+        return $item->load('icon');
+       }
     }
 
     /**
@@ -82,6 +89,7 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {
-        //
+        $item->delete();
+        return $item->load('icon');
     }
 }
