@@ -42,6 +42,9 @@ class ItemController extends Controller
         $template = ItemTemplate::find($request->input('id'));
         $item = new Item($template->toArray());
         $item->itemTemplate()->associate($template);
+        if($request->has('description')){
+            $item->description = $request->input('description');
+        }
         $item->save();
         return $item->load('icon');
        }
